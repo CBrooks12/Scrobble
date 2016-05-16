@@ -33,6 +33,7 @@ public class Game {
 	private boolean boardEnabler;
 	private boolean guiEnabler;
 	private boolean handEnabler; 
+	public boolean updateGui;
 	private Spot tempCell;
 	private Spot tempBoardCell;
 	Random random = new Random();
@@ -63,6 +64,7 @@ public class Game {
 		boardEnabler = false;
 		guiEnabler = false;
 		handEnabler = true;
+		updateGui = true;
 		tempList = new ArrayList<Integer>();
 	}
 
@@ -75,7 +77,10 @@ public class Game {
 	}
 
 	public boolean updateGame(Graphics g, boolean mouseState) {
-		//if(!mouseState)
+		//if(!updateGui)
+		//	return true;
+		if(!mouseState)
+			updateGui = false;
 		play_board.displayBoard(g,tempList);
 		gui.updateDeckSize(pile.getSize());
 		if(turn) {
@@ -85,9 +90,9 @@ public class Game {
 			gui.displayTurnTwo(g);
 			player_two.displayHand(g);
 		}
+		gui.displayGui(g);
 		if(mouseState)
 			displayMovingTile(g,mouseState);
-		gui.displayGui(g);
 		if(game_state == false)
 		{
 			game_state = true;
@@ -107,6 +112,7 @@ public class Game {
 
 	public boolean clickCheck(MouseEvent e) {
 		boolean tempRet = false;
+		updateGui = true;
 		boolean m = true;
 		while(m==true)
 		{
@@ -189,8 +195,6 @@ public class Game {
 					}
 					else
 					{
-						//tempBoardCell = play_board.clickCheck(e);
-						//if(tempBoardCell.getTile()!=null)
 						if(play_board.clickCheck(e)!=null)
 						{
 							if(verifySpot(play_board.clickCheck(e).getSpotNum()))
