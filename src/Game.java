@@ -22,8 +22,6 @@ import javax.swing.SwingUtilities;
 public class Game {
 	private Image img;
 	private Deck pile;
-	private Mulligan mulliganOne;
-	private Mulligan mulliganTwo;
 	private Player player_one;
 	private Player player_two;
 	private Board play_board;
@@ -31,12 +29,10 @@ public class Game {
 	private GUI gui;
 	private int step;
 	private boolean turn; //true = player 1, false = player 2.
-	private int turnCounter;
 	private boolean game_state; //True = running, False = game over.
 	private boolean boardEnabler;
 	private boolean guiEnabler;
 	private boolean handEnabler; 
-	public boolean updateGui;
 	private Spot tempCell;
 	private Spot tempBoardCell;
 	Random random = new Random();
@@ -49,12 +45,6 @@ public class Game {
 		score = new Score();
 		judge = new Judge();
 		pile = new Deck();
-		mulliganOne = new Mulligan();
-		mulliganOne.setVisible(false);
-		mulliganOne.setResizable(false);
-		mulliganTwo = new Mulligan();
-		mulliganTwo.setVisible(false);
-		mulliganTwo.setResizable(false);
 		player_one = new Player();
 		player_one = initHand(player_one, 7);
 		player_two = new Player();
@@ -67,14 +57,12 @@ public class Game {
 		} else {
 			turn = false;
 		}
-		turnCounter = 1;
 		game_state = true;
 		play_board = new Board();
 		step = 1;
 		boardEnabler = false;
 		guiEnabler = false;
 		handEnabler = true;
-		updateGui = true;
 		tempList = new ArrayList<Integer>();
 	}
 
@@ -87,10 +75,7 @@ public class Game {
 	}
 
 	public boolean updateGame(Graphics g, boolean mouseState) {
-		//if(!updateGui)
-		//	return true;
-		if(!mouseState)
-			updateGui = false;
+		//if(!mouseState)
 		play_board.displayBoard(g,tempList);
 		gui.updateDeckSize(pile.getSize());
 		if(turn) {
@@ -100,49 +85,15 @@ public class Game {
 			gui.displayTurnTwo(g);
 			player_two.displayHand(g);
 		}
-		gui.displayGui(g);
 		if(mouseState)
 			displayMovingTile(g,mouseState);
+		gui.displayGui(g);
 		if(game_state == false)
 		{
 			game_state = true;
 			return false;
 		}
-		doMulligan();
 		return true;
-	}
-	
-	private void doMulligan() {
-		if((turnCounter == 1 || turnCounter == 2) && turn) {
-			mulliganOne.setVisible(true);
-		}
-		if(mulliganOne.getSelection()) {
-			mulliganOne.dispose();
-		}
-		if(!mulliganOne.getKeeping()) {
-			for(Spot t : player_one.getHand()) {
-				pile.handToDeck(t);
-				player_one.remove(t);
-			}
-			mulliganOne.toggleKeeping();
-			pile.shuffle();
-			initHand(player_one, 7);
-		}
-		if((turnCounter == 1 || turnCounter == 2) && !turn) {
-			mulliganTwo.setVisible(true);
-		}
-		if(mulliganTwo.getSelection()) {
-			mulliganTwo.dispose();
-		}
-		if(!mulliganTwo.getKeeping()) {
-			for(Spot t : player_two.getHand()) {
-				pile.handToDeck(t);
-				player_two.remove(t);
-			}
-			mulliganTwo.toggleKeeping();
-			pile.shuffle();
-			initHand(player_two, 7);
-		}
 	}
 
 	private void displayMovingTile(Graphics g,boolean mouseState) {
@@ -156,7 +107,6 @@ public class Game {
 
 	public boolean clickCheck(MouseEvent e) {
 		boolean tempRet = false;
-		updateGui = true;
 		boolean m = true;
 		while(m==true)
 		{
@@ -239,6 +189,8 @@ public class Game {
 					}
 					else
 					{
+						//tempBoardCell = play_board.clickCheck(e);
+						//if(tempBoardCell.getTile()!=null)
 						if(play_board.clickCheck(e)!=null)
 						{
 							if(verifySpot(play_board.clickCheck(e).getSpotNum()))
@@ -303,7 +255,6 @@ public class Game {
 					}
 					else 
 					{
-						++turnCounter;
 						if(turn)
 							turn = false;
 						else

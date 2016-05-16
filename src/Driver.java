@@ -65,6 +65,8 @@ public class Driver extends Applet implements Runnable, MouseListener {
 					ex.printStackTrace();
 				}
 		} else {
+			//setSize((int)(1200*.7),(int)(900*.7));
+			//setBackground(Color.BLACK);
 			try {
 				img = ImageIO.read(new File(this.image_folder+"board_final.jpg"));
 				img = img.getScaledInstance((int)(1200*.7),(int)(900*.7), Image.SCALE_DEFAULT);
@@ -115,7 +117,12 @@ public class Driver extends Applet implements Runnable, MouseListener {
 						repaint();
 					}
 					else
+						//newGame = updateGame();
 						updateGame();
+					//enabled = true;
+					//gameState = runGame();
+					///gameState = game.runGame(enabled, myDrops, hud, newGame);
+					//repaint();
 					break;
 				case OVER:
 					newGame = true;
@@ -129,13 +136,18 @@ public class Driver extends Applet implements Runnable, MouseListener {
 		}
 	}
 	private boolean updateGame() {
+		//if(game.boardUpdate())
+		//repaint();
+		//System.out.println("hi");
 		if(mouseState)
 		{
 			game.displayMovingTile(frame.getX(),frame.getY());
 		}
-		if(game.updateGui)
-			repaint();
+		repaint();
 		return true;
+			
+		//}
+		//return GameState.GAME;
 	}
 
 	@Override
@@ -345,7 +357,7 @@ public class Driver extends Applet implements Runnable, MouseListener {
 
 	public static void main(String[] args) throws IOException {
 		 frame = new JFrame();
-		 frame.setSize((int)(1200*.7),(int)(900*.7));
+		 frame.setSize((int)(856),(int)(700));
 		 Scanner in = new Scanner(System.in);
 		 final Applet applet = new Driver(in);
 

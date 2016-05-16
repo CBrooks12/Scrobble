@@ -1,3 +1,7 @@
+/**
+ * This code created by
+ * Documented by Omar Alamoudi 
+ * */
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.io.File;

@@ -1,3 +1,7 @@
+/**
+ * This code was created by
+ * Edited by Omar Alamoudi
+ * */
 /*
  * Import related libraries
  * */
@@ -93,10 +97,6 @@ public class Deck {
      * */
 	public void shuffle() {
 		Collections.shuffle(this.deck);
-	}
-	
-	public void handToDeck(Spot card) {
-		addCard(card.getTile());
 	}
 	
     /**
